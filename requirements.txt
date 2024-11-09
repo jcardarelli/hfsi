@@ -1,0 +1,5 @@
+fetchai
+requests
+numpy
+uagents
+# Add other Python dependencies as required

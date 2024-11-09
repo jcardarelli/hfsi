@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  fetch-ai-agent:
+    build: .
+    container_name: fetch_ai_agent
+    ports:
+      - "5000:5000"  # Expose the port if needed
+    environment:
+      - FETCH_AI_API_KEY=your_api_key_here  # Set any required environment variables
+    volumes:
+      - .:/app  # Bind mount the current directory to /app in the container
+    restart: always
+    networks:
+      - fetch_network
+
+networks:
+  fetch_network:
+    driver: bridge
