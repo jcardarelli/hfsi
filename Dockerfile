@@ -26,6 +26,3 @@ COPY . /app/
 
 # Expose the necessary ports (depends on your Fetch.AI application; this is just an example)
 EXPOSE 5000
-
-# Set the command to run the Fetch.AI agent or service
-CMD ["python", "test_stock_agent.py"]

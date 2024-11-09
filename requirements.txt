@@ -1,5 +1,7 @@
 fetchai
 requests
+beautifulsoup4
+pandas
 numpy
 uagents
 # Add other Python dependencies as required
