@@ -299,10 +299,10 @@ def main():
 
         # summary_df.to_excel("sf_oakland_comparison.xlsx", index=False)
 
-        # logger.info("Comparison completed successfully")
-        # logger.info(f"Report saved as sf_oakland_comparison.txt")
-        # logger.info(f"Raw comparison data saved as sf_oakland_comparison.json")
-        # logger.info(f"Summary spreadsheet saved as sf_oakland_comparison.xlsx")
+        logger.info("Comparison completed successfully")
+        logger.info("Report saved as sf_oakland_comparison.txt")
+        logger.info("Raw comparison data saved as sf_oakland_comparison.json")
+        logger.info("Summary spreadsheet saved as sf_oakland_comparison.xlsx")
 
     except Exception as e:
         logger.error(f"Error during comparison: {e}")
@@ -311,4 +311,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
