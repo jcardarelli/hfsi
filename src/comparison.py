@@ -47,14 +47,21 @@ class BuildingCodeParser:
         """Extract section number from text"""
         pattern = r'(?:Section\s+)?(\d+(?:\.\d+)*)'
         match = re.search(pattern, text)
-        return match.group(1) if match else None
+        
+        if match:
+            return match.group(1) 
+        elif re.search(r'^\d{4}[A-Za-z]\.\d+\.\d+$', text):
+            return re.search(r'^\d{4}[A-Za-z]\.\d+\.\d+$', text).group(1)
+        else:
+            return None
 
     def is_section_header(self, text: str) -> bool:
         """Determine if text is a section header"""
         patterns = [
             r'^\d+(?:\.\d+)*\s+[A-Z]',  # Starts with number followed by capital letter
             r'^Section\s+\d+(?:\.\d+)*',  # Starts with "Section" followed by number
-            r'^\d+(?:\.\d+)*\s*—\s*[A-Z]'  # Number followed by em dash and capital letter
+            r'^\d+(?:\.\d+)*\s*—\s*[A-Z]',  # Number followed by em dash and capital letter
+            r'^\d{4}[A-Za-z]\.\d+\.\d+$' 
         ]
         return any(re.match(pattern, text.strip()) for pattern in patterns)
 
@@ -105,8 +112,6 @@ class BuildingCodeParser:
             logger.error(f"Error parsing PDF {pdf_path}: {e}")
             raise
 
-        for section in sections:
-            print(section)
         return ParsedCode(
             jurisdiction=jurisdiction,
             sections=sections,
@@ -254,10 +259,26 @@ def main():
             "sf_building_code.pdf",
             "San Francisco"
         )
+        print("SF Sections: ")
+        for section in sf_code.sections:
+            print(section.number)
+            
         oakland_code = parser.parse_pdf(
             "oakland_building_code.pdf",
             "Oakland"
         )
+
+        print("Oakland Sections: ")
+        for section in oakland_code.sections:
+            print(section.number)
+
+        california_code = parser.parse_pdf(
+            "california_plumbing_code.pdf",
+            "California"
+        )
+        print("California Sections")
+        for section in california_code.sections:
+            print(section.number)
 
         # Compare codes
         comparison_results = comparator.compare_codes(sf_code, oakland_code)
