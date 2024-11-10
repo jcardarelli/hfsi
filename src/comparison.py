@@ -54,8 +54,6 @@ class BuildingCodeParser:
 
         if match:
             return match.group(1)
-        elif re.search(r"^\d{4}[A-Za-z]\.\d+\.\d+$", text):
-            return re.search(r"^\d{4}[A-Za-z]\.\d+\.\d+$", text).group(1)
         else:
             return None
 
@@ -271,41 +269,40 @@ def main():
 
     try:
         # Parse PDFs
+        california_code = parser.parse_pdf("california_plumbing_code.pdf", "California")
+        print('location, section')
+        for section in california_code.sections:
+            print('california, {}'.format(section.number))
+        
         sf_code = parser.parse_pdf("sf_building_code.pdf", "San Francisco")
-        print("SF Sections: ")
         for section in sf_code.sections:
-            print(section.number)
+            print('san francisco, {}'.format(section.number))
 
         oakland_code = parser.parse_pdf("oakland_building_code.pdf", "Oakland")
 
-        print("Oakland Sections: ")
         for section in oakland_code.sections:
-            print(section.number)
-
-        california_code = parser.parse_pdf("california_plumbing_code.pdf", "California")
-        print("California Sections")
-        for section in california_code.sections:
-            print(section.number)
+            print('oakland, {}'.format(section.number))
 
         # Compare codes
-        comparison_results = comparator.compare_codes(sf_code, oakland_code)
+        # comparison_results = comparator.compare_codes(sf_code, oakland_code)
 
         # Generate and save report
-        report, summary_df = generate_report(comparison_results)
+        # report, summary_df = generate_report(comparison_results)
 
         # Save outputs
-        with open("sf_oakland_comparison.txt", "w") as f:
-            f.write(report)
+        # with open("sf_oakland_comparison.txt", "w") as f:
+        #     f.write(report)
 
-        with open("sf_oakland_comparison.json", "w") as f:
-            json.dump(comparison_results, f, indent=2)
+        # with open("sf_oakland_comparison.json", "w") as f:
+        #     json.dump(comparison_results, f, indent=2)
 
-        summary_df.to_excel("sf_oakland_comparison.xlsx", index=False)
 
-        logger.info("Comparison completed successfully")
-        logger.info(f"Report saved as sf_oakland_comparison.txt")
-        logger.info(f"Raw comparison data saved as sf_oakland_comparison.json")
-        logger.info(f"Summary spreadsheet saved as sf_oakland_comparison.xlsx")
+        # summary_df.to_excel("sf_oakland_comparison.xlsx", index=False)
+
+        # logger.info("Comparison completed successfully")
+        # logger.info(f"Report saved as sf_oakland_comparison.txt")
+        # logger.info(f"Raw comparison data saved as sf_oakland_comparison.json")
+        # logger.info(f"Summary spreadsheet saved as sf_oakland_comparison.xlsx")
 
     except Exception as e:
         logger.error(f"Error during comparison: {e}")
