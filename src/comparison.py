@@ -10,6 +10,8 @@ from typing import Dict, List, Optional
 import pandas as pd
 import pdfplumber
 
+OUTPUT_FILE = "dataset.csv"
+
 # Set up logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -273,14 +275,16 @@ def main():
         sf_code = parser.parse_pdf("sf_building_code.pdf", "San Francisco")
         oakland_code = parser.parse_pdf("oakland_building_code.pdf", "Oakland")
 
-        with open("dataset.csv", "w") as f:
-            f.write('location, section\n')
+        with open(OUTPUT_FILE, "w") as f:
+            f.write("location, section\n")
             for section in california_code.sections:
-                f.write('california, {}\n'.format(section.number))
+                f.write("california, {}\n".format(section.number))
             for section in sf_code.sections:
-                f.write('san francisco, {}\n'.format(section.number))
+                f.write("san francisco, {}\n".format(section.number))
             for section in oakland_code.sections:
-                f.write('oakland, {}\n'.format(section.number))
+                f.write("oakland, {}\n".format(section.number))
+
+        print(f"finished writing CSV to {OUTPUT_FILE}")
 
     except Exception as e:
         logger.error(f"Error during comparison: {e}")
