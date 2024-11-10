@@ -6,14 +6,14 @@ WORKDIR /app
 
 # Install necessary system dependencies
 RUN apt-get update && \
-    apt-get install -y \
-    build-essential \
-    curl \
-    libssl-dev \
-    libffi-dev \
-    python3-dev \
-    python3-pip && \
-    rm -rf /var/lib/apt/lists/*
+	apt-get install -y \
+	build-essential \
+	curl \
+	libssl-dev \
+	libffi-dev \
+	python3-dev \
+	python3-pip && \
+	rm -rf /var/lib/apt/lists/*
 
 # Copy the requirements.txt to the container
 COPY requirements.txt /app/
@@ -25,4 +25,4 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . /app/
 
 # Expose the necessary ports (depends on your Fetch.AI application; this is just an example)
-EXPOSE 5000
+EXPOSE 5100
