@@ -54,8 +54,6 @@ class BuildingCodeParser:
 
         if match:
             return match.group(1)
-        elif re.search(r"^\d{4}[A-Za-z]\.\d+\.\d+$", text):
-            return re.search(r"^\d{4}[A-Za-z]\.\d+\.\d+$", text).group(1)
         else:
             return None
 
@@ -271,41 +269,18 @@ def main():
 
     try:
         # Parse PDFs
+        california_code = parser.parse_pdf("california_plumbing_code.pdf", "California")
         sf_code = parser.parse_pdf("sf_building_code.pdf", "San Francisco")
-        print("SF Sections: ")
-        for section in sf_code.sections:
-            print(section.number)
-
         oakland_code = parser.parse_pdf("oakland_building_code.pdf", "Oakland")
 
-        print("Oakland Sections: ")
-        for section in oakland_code.sections:
-            print(section.number)
-
-        california_code = parser.parse_pdf("california_plumbing_code.pdf", "California")
-        print("California Sections")
-        for section in california_code.sections:
-            print(section.number)
-
-        # Compare codes
-        comparison_results = comparator.compare_codes(sf_code, oakland_code)
-
-        # Generate and save report
-        report, summary_df = generate_report(comparison_results)
-
-        # Save outputs
-        with open("sf_oakland_comparison.txt", "w") as f:
-            f.write(report)
-
-        with open("sf_oakland_comparison.json", "w") as f:
-            json.dump(comparison_results, f, indent=2)
-
-        summary_df.to_excel("sf_oakland_comparison.xlsx", index=False)
-
-        logger.info("Comparison completed successfully")
-        logger.info("Report saved as sf_oakland_comparison.txt")
-        logger.info("Raw comparison data saved as sf_oakland_comparison.json")
-        logger.info("Summary spreadsheet saved as sf_oakland_comparison.xlsx")
+        with open("dataset.csv", "w") as f:
+            f.write('location, section\n')
+            for section in california_code.sections:
+                f.write('california, {}\n'.format(section.number))
+            for section in sf_code.sections:
+                f.write('san francisco, {}\n'.format(section.number))
+            for section in oakland_code.sections:
+                f.write('oakland, {}\n'.format(section.number))
 
     except Exception as e:
         logger.error(f"Error during comparison: {e}")
