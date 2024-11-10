@@ -1,0 +1,9 @@
+fetchai
+requests
+beautifulsoup4
+pandas
+numpy
+uagents
+pdfplumber
+openpyxl
+# Add other Python dependencies as required
