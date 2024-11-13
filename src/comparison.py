@@ -1,3 +1,4 @@
+import argparse
 import json
 import logging
 import re
@@ -15,6 +16,31 @@ OUTPUT_FILE = "dataset.csv"
 # Set up logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
+
+# Set up argument parser
+argparser = argparse.ArgumentParser(description="Building Code Additions")
+argparser.add_argument(
+    "-b",
+    "--base-document",
+    required=True,
+    type=str,
+    help="Base building code document, e.g. 2022 CA Plumbing Code",
+)
+argparser.add_argument(
+    "-c1",
+    "--code1",
+    required=True,
+    type=str,
+    help="Supplemental building code documents 1, e.g. 2022 SF Plumbing",
+)
+argparser.add_argument(
+    "-c2",
+    "--code2",
+    required=True,
+    type=str,
+    help="Supplemental building code documents 2, e.g. 2022 Oakland Plumbing",
+)
+args = argparser.parse_args()
 
 
 @dataclass
@@ -271,18 +297,18 @@ def main():
 
     try:
         # Parse PDFs
-        california_code = parser.parse_pdf("california_plumbing_code.pdf", "California")
-        sf_code = parser.parse_pdf("sf_building_code.pdf", "San Francisco")
-        oakland_code = parser.parse_pdf("oakland_building_code.pdf", "Oakland")
+        state_building_code = parser.parse_pdf(args.base_document, "State")
+        city1_building_code = parser.parse_pdf(args.code1, "City 1")
+        city2_building_code = parser.parse_pdf(args.code2, "City 2")
 
         with open(OUTPUT_FILE, "w") as f:
             f.write("location, section\n")
-            for section in california_code.sections:
-                f.write("california, {}\n".format(section.number))
-            for section in sf_code.sections:
-                f.write("san francisco, {}\n".format(section.number))
-            for section in oakland_code.sections:
-                f.write("oakland, {}\n".format(section.number))
+            for section in state_building_code.sections:
+                f.write("state, {}\n".format(section.number))
+            for section in city1_building_code.sections:
+                f.write("city 1, {}\n".format(section.number))
+            for section in city2_building_code.sections:
+                f.write("city 2, {}\n".format(section.number))
 
         print(f"finished writing CSV to {OUTPUT_FILE}")
 
