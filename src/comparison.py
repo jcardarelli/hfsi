@@ -27,18 +27,12 @@ argparser.add_argument(
     help="Base building code document, e.g. 2022 CA Plumbing Code",
 )
 argparser.add_argument(
-    "-c1",
-    "--code1",
+    "-s",
+    "--supplemental",
     required=True,
+    nargs="+",
     type=str,
-    help="Supplemental building code documents 1, e.g. 2022 SF Plumbing",
-)
-argparser.add_argument(
-    "-c2",
-    "--code2",
-    required=True,
-    type=str,
-    help="Supplemental building code documents 2, e.g. 2022 Oakland Plumbing",
+    help="Supplemental building code documents, e.g. 2022 SF Plumbing",
 )
 args = argparser.parse_args()
 
@@ -296,21 +290,23 @@ def main():
     comparator = CodeComparator()
 
     try:
-        # Parse PDFs
-        state_building_code = parser.parse_pdf(args.base_document, "State")
-        city1_building_code = parser.parse_pdf(args.code1, "City 1")
-        city2_building_code = parser.parse_pdf(args.code2, "City 2")
-
         with open(OUTPUT_FILE, "w") as f:
+            # Write CSV header
             f.write("location, section\n")
-            for section in state_building_code.sections:
-                f.write("state, {}\n".format(section.number))
-            for section in city1_building_code.sections:
-                f.write("city 1, {}\n".format(section.number))
-            for section in city2_building_code.sections:
-                f.write("city 2, {}\n".format(section.number))
 
-        print(f"finished writing CSV to {OUTPUT_FILE}")
+            # Parse PDF for state
+            state_building_code = parser.parse_pdf(args.base_document, "State")
+            f.write(str(state_building_code))
+            for section in state_building_code.sections:
+                f.write(f"state\n{section.number}")
+
+            # Parse PDFs for cities
+            for i, city in enumerate(args.supplemental):
+                city_building_code = parser.parse_pdf(city, f"City {i}")
+                f.write(str(city))
+                for section in city_building_code.sections:
+                    f.write(f"city {i}\n{section.number}")
+        f.close()
 
     except Exception as e:
         logger.error(f"Error during comparison: {e}")
