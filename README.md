@@ -3,6 +3,10 @@
 ```bash
 docker compose build
 ```
+<details>
+
+<summary>output</summary>
+
 ```
 [+] Building 3.2s (12/12) FINISHED                                       docker:desktop-linux
  => [hfsi internal] load build definition from Dockerfile                                0.0s
@@ -24,10 +28,15 @@ docker compose build
  => => naming to docker.io/library/hfsi-hfsi                                             0.0s
  => [hfsi] resolving provenance for metadata file                                        0.0s
 ```
+</details>
+
 ## Help
 ```bash
 docker compose run hfsi python3 /app/src/comparison.py --help
 ```
+<details>
+<summary>output</summary>
+
 ```
 usage: comparison.py [-h] -b BASE_DOCUMENT -s SUPPLEMENTAL [SUPPLEMENTAL ...]
 
@@ -40,6 +49,9 @@ optional arguments:
   -s SUPPLEMENTAL [SUPPLEMENTAL ...], --supplemental SUPPLEMENTAL [SUPPLEMENTAL ...]
                         Supplemental building code documents, e.g. 2022 SF Plumbing
 ```
+
+</details>
+
 ## Run
 Build and run container with base doc and two supplemental docs
 ```bash
@@ -47,6 +59,10 @@ docker compose run --build hfsi python3 /app/src/comparison.py \
   -b /app/src/california_plumbing_code.pdf \
   -s /app/src/oakland_building_code.pdf /app/src/sf_building_code.pdf
 ```
+
+<details>
+<summary>output</summary>
+
 ```
 [+] Building 3.1s (12/12) FINISHED                                       docker:desktop-linux
  => [hfsi internal] load build definition from Dockerfile                                0.0s
@@ -71,3 +87,5 @@ INFO:__main__:Parsing State building code from /app/src/california_plumbing_code
 INFO:__main__:Parsing City 0 building code from /app/src/oakland_building_code.pdf
 INFO:__main__:Parsing City 1 building code from /app/src/sf_building_code.pdf
 ```
+
+</details>
