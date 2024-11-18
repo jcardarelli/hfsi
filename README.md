@@ -1,21 +1,4 @@
 # HfSI Project
-
-## Help
-```bash
-docker compose run hfsi python3 /app/src/comparison.py --help
-```
-```
-usage: comparison.py [-h] -b BASE_DOCUMENT -s SUPPLEMENTAL [SUPPLEMENTAL ...]
-
-Building Code Additions
-
-optional arguments:
-  -h, --help            show this help message and exit
-  -b BASE_DOCUMENT, --base-document BASE_DOCUMENT
-                        Base building code document, e.g. 2022 CA Plumbing Code
-  -s SUPPLEMENTAL [SUPPLEMENTAL ...], --supplemental SUPPLEMENTAL [SUPPLEMENTAL ...]
-                        Supplemental building code documents, e.g. 2022 SF Plumbing
-```
 ## Build
 ```bash
 docker compose build
@@ -40,6 +23,22 @@ docker compose build
  => => writing image sha256:e1897cb9d209895740c70ac64cc363fce5d517a06fc2fe74460c05f197b  0.0s
  => => naming to docker.io/library/hfsi-hfsi                                             0.0s
  => [hfsi] resolving provenance for metadata file                                        0.0s
+```
+## Help
+```bash
+docker compose run hfsi python3 /app/src/comparison.py --help
+```
+```
+usage: comparison.py [-h] -b BASE_DOCUMENT -s SUPPLEMENTAL [SUPPLEMENTAL ...]
+
+Building Code Additions
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -b BASE_DOCUMENT, --base-document BASE_DOCUMENT
+                        Base building code document, e.g. 2022 CA Plumbing Code
+  -s SUPPLEMENTAL [SUPPLEMENTAL ...], --supplemental SUPPLEMENTAL [SUPPLEMENTAL ...]
+                        Supplemental building code documents, e.g. 2022 SF Plumbing
 ```
 ## Run
 Build and run container with base doc and two supplemental docs
