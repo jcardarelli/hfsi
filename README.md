@@ -31,6 +31,7 @@ docker compose build
 </details>
 
 ## Help
+Show the argparse help menu:
 ```bash
 docker compose run hfsi python3 /app/src/comparison.py --help
 ```
